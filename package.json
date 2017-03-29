@@ -1,0 +1,28 @@
+{
+  "name": "superheroes_crud",
+  "version": "1.0.0",
+  "description": "A demo crud api using mongodb and express as our API router",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fresh5447/Superheroes_crud-PT.git"
+  },
+  "keywords": [
+    "node",
+    "mongo",
+    "superheroes"
+  ],
+  "author": "Doug Walter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fresh5447/Superheroes_crud-PT/issues"
+  },
+  "homepage": "https://github.com/fresh5447/Superheroes_crud-PT#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
