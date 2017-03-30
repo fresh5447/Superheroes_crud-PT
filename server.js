@@ -1,5 +1,12 @@
-var express = require('express');
-var app     = express();
+var express   = require('express');
+var Superhero = require('./models/superhero');
+var app       = express();
+
+var mongoose = require('mongoose');
+
+// required to connect to our local database.
+// it will look for/ or create a db called superheroes
+mongoose.connect("mongodb://localhost/superheroes");
 
 
 // app.METHOD('URL LOCATION', function(req, res){ handle req/res })
