@@ -9,6 +9,18 @@ app.get('/test', function(req, res){
   res.send("You found the test route");
 });
 
+var superHero1 = {
+  name: "Superman",
+  superPower: "I can fly!!",
+  universe: "DC",
+  evil: false,
+  rank: 10
+};
+
+app.get('/superhero', function(req, res){
+  res.json(superHero1);
+});
+
 var server = app.listen(3000, function(){
   console.log('Server running 🔥🔥 on PORT 3000');
 });
