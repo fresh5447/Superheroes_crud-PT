@@ -1,6 +1,7 @@
 var express   = require('express');
 var Superhero = require('./models/superhero');
 var app       = express();
+var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 
@@ -8,25 +9,58 @@ var mongoose = require('mongoose');
 // it will look for/ or create a db called superheroes
 mongoose.connect("mongodb://localhost/superheroes");
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.METHOD('URL LOCATION', function(req, res){ handle req/res })
+// return all superheroes
+app.get('/superheroes', function(req,res){
 
-// 'have to go to localhost:3000/test to find this..'
-app.get('/test', function(req, res){
-  res.send("You found the test route");
+  Superhero.find(function(err, data){
+    if(err){
+      console.log(err);
+    } else {
+      res.json(data);
+    }
+  });
+
 });
 
-var superHero1 = {
-  name: "Superman",
-  superPower: "I can fly!!",
-  universe: "DC",
-  evil: false,
-  rank: 10
-};
+app.post('/superheroes', function(req, res){
+  var newSuper = new Superhero({
+    name:       req.body.name,
+    superPower: req.body.superPower,
+    universe:   req.body.universe,
+    evil:       req.body.evil,
+    rank:       req.body.rank,
+  });
+  newSuper.save(function(err, sh){
+    if(err){
+      console.log(err)
+    } else {
+      res.json(sh)
+    }
+  });
+})
 
-app.get('/superhero', function(req, res){
-  res.json(superHero1);
+app.get('/superheroes/:superhero_id', function(req, res) {
+  Superhero.findById(req.params.superhero_id, function(err, data){
+    if(err){
+      console.log(err);
+    } else {
+      res.json(data);
+    }
+  })
 });
+
+// app.delete
+// app.put
+
+
+
+
+
+
 
 var server = app.listen(3000, function(){
   console.log('Server running 🔥🔥 on PORT 3000');
