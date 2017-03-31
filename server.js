@@ -1,13 +1,18 @@
-var express   = require('express');
-var Superhero = require('./models/superhero');
-var app       = express();
+var express    = require('express');
+var Superhero  = require('./models/superhero');
+var Villain  = require('./models/villain');
+var app        = express();
 var bodyParser = require('body-parser');
-
-var mongoose = require('mongoose');
+var mongoose   = require('mongoose');
 
 // required to connect to our local database.
 // it will look for/ or create a db called superheroes
 mongoose.connect("mongodb://localhost/superheroes");
+
+
+// We need to create a new resource
+// We will need a schema
+// make GET all, POST, & DELETE
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,6 +59,18 @@ app.get('/superheroes/:superhero_id', function(req, res) {
 });
 
 // app.delete
+app.delete('/superheroes/:superhero_id', function(req, res){
+
+  Superhero.remove({ _id: req.params.superhero_id }, function(err) {
+    if(err){
+      console.log(err);
+    } else {
+      res.send("Super hero deleted! 👾");
+    }
+  });
+
+});
+
 // app.put
 
 
