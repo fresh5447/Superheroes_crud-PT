@@ -28,5 +28,5 @@ app.use(express.static('public'))
 routes(app);
 
 var server = app.listen(3000, function(){
-  console.log('Server running 🔥🔥 on PORT 3000');
+  console.log(`🔥🔥🔥  @ http://localhost:3000/`);
 });
