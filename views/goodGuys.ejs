@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Superheros</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="container">
+    <div class="jumbotron my-jumbo">
+      <h1>Heroes and Villains</h1>
+      <p>Enthusiasts club of '82'</p>
+      <a class="btn btn-primary" href="/heroes">Heroes</a>
+      <a class="btn btn-primary" href="/villains">Bad Guys</a>
+      <a class="btn btn-primary" href="/">Home</a>
+    </div>
+    <div class="container main-panel-flex" id="component">
+      <div v-for="hero in heroes" class="hero-panel">
+        <h1>{{ hero.name }}<small>{{ hero.universe }}</small></h1>
+        <img :src="hero.imageUrl" class="hero-img"/>
+        <h4> Rank {{ hero.rank }} </h4>
+        <button class="btn btn-warning" type="button" @click="sayPower(hero)"> Say Power </button>
+        <button class="btn btn-danger" type="button" @click="deleteHero(hero._id)"> DESTROY </button>
+      </div>
+    </div>
+    <div>
+      <form v-on:submit="submitHero" class="form my-jumbo">
+        <h3> Post New Hero </h3>
+        <div class="form-group">
+          <label>name</label>
+          <input v-model="nName" type="text" class="form-control" id="" placeholder="">
+        </div>
+        <div class="form-group">
+          <label>super power</label>
+          <input v-model="nPower" type="text" class="form-control" id="" placeholder="">
+        </div>
+        <div class="form-group">
+          <label>universe</label>
+          <input v-model="nUniverse" type="text" class="form-control" id="" placeholder="">
+        </div>
+        <div class="form-group">
+          <label>evil</label>
+          <input v-model="nEvil" type="text" class="form-control" id="" placeholder="">
+        </div>
+        <div class="form-group">
+          <label>rank</label>
+          <input v-model="nRank" type="text" class="form-control" id="" placeholder="">
+        </div>
+        <button class="btn btn-success" type="submit"> CREATE </button>
+      </form>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="js/fetchData.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

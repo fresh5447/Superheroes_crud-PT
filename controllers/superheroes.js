@@ -34,11 +34,13 @@ exports.update = function(req, res){
 
     if (!hero) return res.status(404);
 
+    console.log("EDITING SUPER HEO")
+
     hero.name       = req.body.name ? req.body.name : hero.name;
     hero.superPower = req.body.superPower ? req.body.superPower : hero.superPower;
     hero.universe   = req.body.universe ? req.body.universe : hero.universe;
     hero.rank       = req.body.rank ? req.body.rank : hero.rank;
-    hero.rank       = req.body.rank ? req.body.rank : hero.rank;
+    hero.imageUrl   = req.body.imageUrl ? req.body.imageUrl : hero.imageUrl;
 
     hero.save(function(er){
       if (er) {
@@ -59,6 +61,7 @@ exports.create = function(req, res){
     universe:   req.body.universe,
     evil:       req.body.evil,
     rank:       req.body.rank,
+    imageUrl:   req.body.imageUrl,
   });
   newSuper.save(function(err, hero){
     if(err){

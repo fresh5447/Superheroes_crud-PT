@@ -21,7 +21,15 @@ app.use(morgan('combined'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Static file serving
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+app.get('/heroes', function(req, res){
+  res.render('goodGuys');
+});
+
+app.get('/villains', function(req, res){
+  res.render('badGuys');
+});
 
 
 // Mount application routes

@@ -34,15 +34,11 @@ $(document).ready(function(){
           console.log(response, "DATA IN AJAX");
         })
       },
-      deleteHero: function(id) {
-        var self = this;
-        $.ajax({
-          url: '/superheroes/' + id,
-          method: 'DELETE',
-        }).done(function(response){
-          window.location = "/"
-          console.log(response, "DELETE THAT SHIT");
-        })
+      deleteHero: function(id){
+        var myInit = { method: 'DELETE' };
+        fetch('/superheroes/' + id, myInit)
+          .then((d) => d.json())
+          .then((data) => console.log(data))
       }
     }
   })
@@ -50,8 +46,13 @@ $(document).ready(function(){
   fetch('/superheroes')
     .then(d => d.json())
     .then(d => {
-      console.table(d)
-      newVue.heroes = d;
+
+      var sortedData = d.sort(function(a, b){
+        return a.rank > b.rank ? 1 : -1
+      });
+
+      newVue.heroes = sortedData;
+
     })
     .catch(e => {
       console.error(e, "Could not fetch data")

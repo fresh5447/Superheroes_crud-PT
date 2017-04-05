@@ -6,6 +6,7 @@ var VillainSchema = new Schema({
   evilPower: String,
   evil: { default: true, type: Boolean },
   nemesis: String,
+  img: String
 });
 
 module.exports = mongoose.model('Villain', VillainSchema);
