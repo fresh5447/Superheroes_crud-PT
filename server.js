@@ -1,6 +1,7 @@
 var express    = require('express');
+var path       = require('path');
 var Superhero  = require('./models/superhero');
-var Villain  = require('./models/villain');
+var Villain    = require('./models/villain');
 var app        = express();
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
@@ -9,7 +10,6 @@ var mongoose   = require('mongoose');
 // it will look for/ or create a db called superheroes
 mongoose.connect("mongodb://localhost/superheroes");
 
-
 // We need to create a new resource
 // We will need a schema
 // make GET all, POST, & DELETE
@@ -17,8 +17,18 @@ mongoose.connect("mongodb://localhost/superheroes");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.METHOD('URL LOCATION', function(req, res){ handle req/res })
-// return all superheroes
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// localhost:3000 will render the index.ejs page.
+app.get('/', function(req, res) {
+  res.render('index');
+});
+
+app.get('/heroes', function(req, res) {
+  res.render('goodGuys');
+});
+
 app.get('/superheroes', function(req,res){
 
   Superhero.find(function(err, data){
