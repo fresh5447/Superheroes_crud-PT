@@ -17,6 +17,10 @@ mongoose.connect("mongodb://localhost/superheroes");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// tells express our client side (static) code
+// is going to live in the public folder
+app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -26,10 +30,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/heroes', function(req, res) {
-  res.render('goodGuys');
+  res.render('goodGuys', { data: "HELLOOOO" });
 });
 
-app.get('/superheroes', function(req,res){
+app.get('/api/superheroes', function(req,res){
 
   Superhero.find(function(err, data){
     if(err){
@@ -41,7 +45,7 @@ app.get('/superheroes', function(req,res){
 
 });
 
-app.post('/superheroes', function(req, res){
+app.post('/api/superheroes', function(req, res){
   var newSuper = new Superhero({
     name:       req.body.name,
     superPower: req.body.superPower,
@@ -58,7 +62,7 @@ app.post('/superheroes', function(req, res){
   });
 })
 
-app.get('/superheroes/:superhero_id', function(req, res) {
+app.get('/api/superheroes/:superhero_id', function(req, res) {
   Superhero.findById(req.params.superhero_id, function(err, data){
     if(err){
       console.log(err);
@@ -69,7 +73,7 @@ app.get('/superheroes/:superhero_id', function(req, res) {
 });
 
 // app.delete
-app.delete('/superheroes/:superhero_id', function(req, res){
+app.delete('/api/superheroes/:superhero_id', function(req, res){
 
   Superhero.remove({ _id: req.params.superhero_id }, function(err) {
     if(err){
