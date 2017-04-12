@@ -85,10 +85,9 @@ app.put('/api/villains/:villain_id', function(req,res){
     vil.loadData(req.body);
     vil.save(function(e){
       if(e) return e
-      res.json(vil)
-    })
-
-  })
+      res.json(vil);
+    });
+  });
 });
 
 app.get('/api/superheroes/:superhero_id', function(req,res){
@@ -128,7 +127,7 @@ app.delete('/api/superheroes/:superhero_id', function(req,res){
 });
 
 app.listen(app.get('port'), () => {
-  console.log(chalk.blue("BEGIN COMER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
+  console.log(chalk.blue("BEGIN COMPUTER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
   console.log(`SERVER 🔥🔥🔥🔥 @  http://localhost:${app.get('port')}/`);
   console.log('OMG RAINBOWS!'.rainbow); // rainbow
 })
