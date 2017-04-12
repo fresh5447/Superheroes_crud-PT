@@ -6,7 +6,8 @@ var express    = require('express');
     bodyParser = require('body-parser'),
     mongoose   = require('mongoose'),
     chalk      = require('chalk'),
-    colors     = require('colors');
+    colors     = require('colors'),
+    heroRoutes = require('./routes/superheroes');
 
 mongoose.connect("mongodb://localhost/superheroes");
 
@@ -26,15 +27,7 @@ app.get('/heroes', function(req, res) {
   res.render('goodGuys');
 });
 
-app.get('/api/superheroes', function(req,res){ //added /api for backend
-  Superhero.find(function(err, data){
-    if (err) {
-      return res.status(404)
-    } else {
-      res.json(data);
-    }
-  });
-})
+
 
 app.get('/api/villains', function(req,res){
   Villain.find(function(err, data){
@@ -46,21 +39,7 @@ app.get('/api/villains', function(req,res){
   });
 });
 
-app.post('/api/superheroes', function(req,res){
-  var newSuperHero = new Superhero();
 
-  newSuperHero.loadPower(req.body.superPower);
-  newSuperHero.loadData(req.body);
-
-  newSuperHero.save(function(err, data){
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(data);
-    }
-  });
-
-});
 
 app.post('/api/villains', function(req,res){
     var newVillain = new Villain({
@@ -90,44 +69,15 @@ app.put('/api/villains/:villain_id', function(req,res){
   });
 });
 
-app.get('/api/superheroes/:superhero_id', function(req,res){
-  Superhero.findById(req.params.superhero_id, function(err,data){
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(data);
-    }
-  });
-});
+app.use('/api/superheroes', heroRoutes);
 
-app.put('/api/superheroes/:superhero_id', function(req,res){
-  Superhero.findById(req.params.superhero_id, function(err, hero){
 
-    if(err) return err
 
-    hero.loadPower(req.body.superPower);
-    hero.loadData(req.body);
-
-    hero.save(function(e){
-      if(e) return e
-      res.json(hero)
-    })
-
-  })
-});
-
-app.delete('/api/superheroes/:superhero_id', function(req,res){
-  Superhero.remove({_id: req.params.superhero_id}, function(err){
-    if (err) {
-      console.log(err);
-    } else {
-      res.send("Super hero was 💩🛢'd")
-    }
-  });
-});
 
 app.listen(app.get('port'), () => {
   console.log(chalk.blue("BEGIN COMPUTER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
   console.log(`SERVER 🔥🔥🔥🔥 @  http://localhost:${app.get('port')}/`);
   console.log('OMG RAINBOWS!'.rainbow); // rainbow
 })
+
+module.exports = app;
