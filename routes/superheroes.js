@@ -48,16 +48,20 @@ Router.route('/:superhero_id')
   });
 })
 .put(function(req,res){
-  Superhero.findById(req.params.superhero_id, function(err, hero){
+  Superhero.findById(req.params.superhero_id, function(err, data){
 
-    if(err) return err
+    if(err) res.send(err)
 
-    hero.loadPower(req.body.superPower);
-    hero.loadData(req.body);
+    if(req.body.superPower) {
+      data.loadPower(req.body.superPower);
+    }
 
-    hero.save(function(e){
-      if(e) return e
-      res.json(hero)
+
+    data.loadData(req.body);
+
+    data.save(function(e){
+      if(err) res.send(err)
+      res.json({ message: 'Hero updated!', data });
     })
 
   })

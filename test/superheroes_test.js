@@ -6,8 +6,6 @@ var server = require('../server');
 
 chai.use(chaiHttp);
 
-
-
 describe('/GET ALL HEROES', function(){
   it('returns an array for our heros', function(done){
     chai.request(server)
@@ -70,7 +68,6 @@ describe('/POST NEW HERO', function(){
 
 });
 
-
 describe('GET HERO BY ID', function(){
   it('it should get HERO by ID', function(done){
     var hero = new Superhero({
@@ -95,5 +92,37 @@ describe('GET HERO BY ID', function(){
         })
     })
 
+  })
+});
+
+describe('EDIT A HERO', function() {
+  it('I can update a hero, given i have the id', function(done) {
+    var hero = new Superhero({ name: "AAquaman" })
+    hero.save(function(err, hero) {
+      chai.request(server)
+      .put('/api/superheroes/' + hero._id)
+      .send({name: "Aquaman"})
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('message').eql('Hero updated!');
+        res.body.data.should.have.property('name').eql('Aquaman');
+        done();
+      })
+    })
+  })
+})
+
+describe('DELETE A HERO', function(){
+  it('Can delete a hero by id', function(done){
+    var hero = new Superhero({ name: "Blueman" })
+    hero.save(function(err, hero) {
+      chai.request(server)
+        .delete('/api/superheroes/' + hero._id)
+        .end(function(err, res){
+          res.should.have.status(200);
+          done();
+        })
+    })
   })
 });
