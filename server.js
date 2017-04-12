@@ -5,6 +5,7 @@ var Villain    = require('./models/villain');
 var app        = express();
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
+var chalk      = require('chalk');
 
 // required to connect to our local database.
 // it will look for/ or create a db called superheroes
@@ -13,6 +14,8 @@ mongoose.connect("mongodb://localhost/superheroes");
 // We need to create a new resource
 // We will need a schema
 // make GET all, POST, & DELETE
+
+app.set('port', 3000)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,15 +53,10 @@ app.get('/api/villains', function(req,res){
   });
 });
 
-// Posts to the superhero DB
+
 app.post('/api/superheroes', function(req,res){
-  var newSuper = new Superhero({
-      name: req.body.name,
-      superPower: req.body.superPower,
-      universe: req.body.universe,
-      evil: req.body.evil,
-      rank: req.body.rank
-  });
+  var newSuper = new Superhero();
+  
   newSuper.save(function(err,data){
     if (err) {
       console.log(err);
@@ -113,6 +111,8 @@ app.delete('/api/superheroes/:superhero_id', function(req,res){
 
 
 
-var server = app.listen(3000, function(){
-  console.log('Server running 🔥🔥 on PORT 3000');
-});
+app.listen(app.get('port'), () => {
+  console.log(chalk.blue("BEGIN COMPUTER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
+  console.log(`SERVER 🔥🔥🔥🔥 @  http://localhost:${app.get('port')}/`);
+  console.log('OMG RAINBOWS!'.rainbow); // rainbow
+})
