@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 
 
-describe('/GET heros', function(){
+describe('/GET ALL HEROES', function(){
   it('returns an array for our heros', function(done){
     chai.request(server)
       .get('/api/superheroes')
@@ -21,7 +21,7 @@ describe('/GET heros', function(){
   })
 });
 
-describe('/POST hero', function(){
+describe('/POST NEW HERO', function(){
   it('should not POST hero without a name', function(done) {
 
     var hero = {
@@ -63,10 +63,37 @@ describe('/POST hero', function(){
         res.body.data.should.have.property('name');
         res.body.data.should.have.property('superPowers');
         res.body.data.superPowers.should.be.a('array');
-
         done();
       })
 
   })
 
+});
+
+
+describe('GET HERO BY ID', function(){
+  it('it should get HERO by ID', function(done){
+    var hero = new Superhero({
+      name: "Batman",
+      superPower: 'I am rich',
+      superPower: 'I am a bat',
+      alias: "Bruce Wayne",
+      evil: false,
+      rank: 10,
+      img: "https://upload.wikimedia.org/wikipedia/en/1/17/Batman-BenAffleck.jpg"
+    });
+
+    hero.save(function(err, hero) {
+      chai.request(server)
+        .get('/api/superheroes/' + hero._id)
+        .send(hero)
+        .end(function(err, res) {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('name')
+          done();
+        })
+    })
+
+  })
 });
