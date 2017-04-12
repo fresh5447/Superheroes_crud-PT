@@ -1,21 +1,16 @@
 var express    = require('express');
-var path       = require('path');
-var Superhero  = require('./models/superhero');
-var Villain    = require('./models/villain');
-var app        = express();
-var bodyParser = require('body-parser');
-var mongoose   = require('mongoose');
-var chalk      = require('chalk');
+    path       = require('path'),
+    Superhero  = require('./models/superhero'),
+    Villain    = require('./models/villain'),
+    app        = express(),
+    bodyParser = require('body-parser'),
+    mongoose   = require('mongoose'),
+    chalk      = require('chalk'),
+    colors     = require('colors');
 
-// required to connect to our local database.
-// it will look for/ or create a db called superheroes
 mongoose.connect("mongodb://localhost/superheroes");
 
-// We need to create a new resource
-// We will need a schema
-// make GET all, POST, & DELETE
-
-app.set('port', 3000)
+app.set('port', 3000);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,7 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// localhost:3000 will render the index.ejs page.
 app.get('/', function(req, res) {
   res.render('index');
 });
@@ -42,7 +36,6 @@ app.get('/api/superheroes', function(req,res){ //added /api for backend
   });
 })
 
-// Returns all villains from the DB
 app.get('/api/villains', function(req,res){
   Villain.find(function(err, data){
     if (err) {
@@ -53,20 +46,22 @@ app.get('/api/villains', function(req,res){
   });
 });
 
-
 app.post('/api/superheroes', function(req,res){
-  var newSuper = new Superhero();
-  
-  newSuper.save(function(err,data){
+  var newSuperHero = new Superhero();
+
+  newSuperHero.loadPower(req.body.superPower);
+  newSuperHero.loadData(req.body);
+
+  newSuperHero.save(function(err, data){
     if (err) {
       console.log(err);
     } else {
       res.json(data);
     }
   });
+
 });
 
-// Posts to the villain DB
 app.post('/api/villains', function(req,res){
     var newVillain = new Villain({
       name: req.body.name,
@@ -83,7 +78,19 @@ app.post('/api/villains', function(req,res){
     });
 });
 
-//added /api for backend
+app.put('/api/villains/:villain_id', function(req,res){
+  Villain.findById(req.params.villain_id, function(err, vil){
+    if(err) return err
+    vil.loadPower(req.body.evilPower);
+    vil.loadData(req.body);
+    vil.save(function(e){
+      if(e) return e
+      res.json(vil)
+    })
+
+  })
+});
+
 app.get('/api/superheroes/:superhero_id', function(req,res){
   Superhero.findById(req.params.superhero_id, function(err,data){
     if (err) {
@@ -94,7 +101,21 @@ app.get('/api/superheroes/:superhero_id', function(req,res){
   });
 });
 
-// app.delete
+app.put('/api/superheroes/:superhero_id', function(req,res){
+  Superhero.findById(req.params.superhero_id, function(err, hero){
+
+    if(err) return err
+
+    hero.loadPower(req.body.superPower);
+    hero.loadData(req.body);
+
+    hero.save(function(e){
+      if(e) return e
+      res.json(hero)
+    })
+
+  })
+});
 
 app.delete('/api/superheroes/:superhero_id', function(req,res){
   Superhero.remove({_id: req.params.superhero_id}, function(err){
@@ -106,13 +127,8 @@ app.delete('/api/superheroes/:superhero_id', function(req,res){
   });
 });
 
-
-
-
-
-
 app.listen(app.get('port'), () => {
-  console.log(chalk.blue("BEGIN COMPUTER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
+  console.log(chalk.blue("BEGIN COMER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
   console.log(`SERVER 🔥🔥🔥🔥 @  http://localhost:${app.get('port')}/`);
   console.log('OMG RAINBOWS!'.rainbow); // rainbow
 })
