@@ -29,60 +29,84 @@ app.get('/heroes', function(req, res) {
   res.render('goodGuys');
 });
 
-app.get('/superheroes', function(req,res){
-
+app.get('/api/superheroes', function(req,res){ //added /api for backend
   Superhero.find(function(err, data){
-    if(err){
-      console.log(err);
+    if (err) {
+      return res.status(404)
     } else {
       res.json(data);
-    }
-  });
-
-});
-
-app.post('/superheroes', function(req, res){
-  var newSuper = new Superhero({
-    name:       req.body.name,
-    superPower: req.body.superPower,
-    universe:   req.body.universe,
-    evil:       req.body.evil,
-    rank:       req.body.rank,
-  });
-  newSuper.save(function(err, sh){
-    if(err){
-      console.log(err)
-    } else {
-      res.json(sh)
     }
   });
 })
 
-app.get('/superheroes/:superhero_id', function(req, res) {
-  Superhero.findById(req.params.superhero_id, function(err, data){
-    if(err){
+// Returns all villains from the DB
+app.get('/api/villains', function(req,res){
+  Villain.find(function(err, data){
+    if (err) {
       console.log(err);
     } else {
       res.json(data);
     }
-  })
+  });
+});
+
+// Posts to the superhero DB
+app.post('/api/superheroes', function(req,res){
+  var newSuper = new Superhero({
+      name: req.body.name,
+      superPower: req.body.superPower,
+      universe: req.body.universe,
+      evil: req.body.evil,
+      rank: req.body.rank
+  });
+  newSuper.save(function(err,data){
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+// Posts to the villain DB
+app.post('/api/villains', function(req,res){
+    var newVillain = new Villain({
+      name: req.body.name,
+      evilPower: req.body.evilPower,
+      evil: req.body.evil,
+      nemesis: req.body.nemesis
+    });
+    newVillain.save(function(err,data){
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(data);
+      }
+    });
+});
+
+//added /api for backend
+app.get('/api/superheroes/:superhero_id', function(req,res){
+  Superhero.findById(req.params.superhero_id, function(err,data){
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(data);
+    }
+  });
 });
 
 // app.delete
-app.delete('/superheroes/:superhero_id', function(req, res){
 
-  Superhero.remove({ _id: req.params.superhero_id }, function(err) {
-    if(err){
+app.delete('/api/superheroes/:superhero_id', function(req,res){
+  Superhero.remove({_id: req.params.superhero_id}, function(err){
+    if (err) {
       console.log(err);
     } else {
-      res.send("Super hero deleted! 👾");
+      res.send("Super hero was 💩🛢'd")
     }
   });
-
 });
-
-// app.put
-
 
 
 
