@@ -6,9 +6,9 @@ Router.route('/')
 .get(function(req,res){ //added /api for backend
   Superhero.find(function(err, data){
     if (err) {
-      return res.status(404)
+      res.send(err)
     } else {
-      res.json(data);
+      res.json({message: "We found your heroes!!", data });
     }
   });
 })
@@ -32,7 +32,7 @@ Router.route('/:superhero_id')
   .get(function(req,res){
     Superhero.findById(req.params.superhero_id, function(err,data){
       if (err) {
-        console.log(err);
+        res.send({ err, msg: "Could not find hero with that ID"});
       } else {
         res.json(data);
       }

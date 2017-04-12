@@ -7,13 +7,14 @@ var server = require('../server');
 chai.use(chaiHttp);
 
 describe('/GET ALL HEROES', function(){
-  it('returns an array for our heros', function(done){
+  it('returns all heroes from database', function(done){
     chai.request(server)
       .get('/api/superheroes')
       .end(function(err, res){
         res.should.have.status(200);
-        res.body.should.be.a('array');
-        // res.body.length.should.be.eql(2);
+        res.body.should.be.a('object');
+        res.body.should.have.property('message').eql('We found your heroes!!');
+        res.body.data.should.be.a('array');
         done();
       })
   })
@@ -93,6 +94,18 @@ describe('GET HERO BY ID', function(){
     })
 
   })
+
+  it('will not break without ID', function(done){
+    chai.request(server)
+      .get('/api/superheroes/23423')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('msg');
+        res.body.should.have.property('msg').eql('Could not find hero with that ID');
+        done();
+      })
+  });
 });
 
 describe('EDIT A HERO', function() {
