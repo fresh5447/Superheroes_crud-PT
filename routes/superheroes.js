@@ -2,6 +2,7 @@ var express = require('express');
 var Router = express.Router();
 var Superhero = require('../models/superhero');
 
+
 Router.route('/')
 .get(function(req,res){ //added /api for backend
   Superhero.find(function(err, data){

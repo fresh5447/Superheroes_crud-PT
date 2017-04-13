@@ -77,7 +77,6 @@ app.use('/api/superheroes', heroRoutes);
 app.listen(app.get('port'), () => {
   console.log(chalk.blue("BEGIN COMPUTER STUFF 🤖 BEEEP 🤖 BOOOP 🤖 BOPPPPP 🤖"));
   console.log(`SERVER 🔥🔥🔥🔥 @  http://localhost:${app.get('port')}/`);
-  console.log('OMG RAINBOWS!'.rainbow); // rainbow
 })
 
 module.exports = app;

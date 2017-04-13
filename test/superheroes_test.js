@@ -3,10 +3,11 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var should = chai.should();
 var server = require('../server');
+var colors = require('colors')
 
 chai.use(chaiHttp);
 
-describe('/GET ALL HEROES', function(){
+describe('/GET'.rainbow, function(){
   it('returns all heroes from database', function(done){
     chai.request(server)
       .get('/api/superheroes')
