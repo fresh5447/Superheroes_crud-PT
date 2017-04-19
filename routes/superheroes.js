@@ -1,6 +1,8 @@
 var express = require('express');
-var Router = express.Router();
-var Superhero = require('../models/superhero')
+var Router  = express.Router();
+var async   = require('async');
+
+var Superhero = require('../models/superhero');
 
 Router.route('/')
   .get(function(req,res){
@@ -25,6 +27,29 @@ Router.route('/')
         res.json({ data, message: "Hero successfully added!" });
       }
     })
+  });
+
+Router.route('/multiple')
+  .post(function(req,res){
+    var newHeroes = [];
+    async.each(req.body.data, function(hero, cb) {
+      var newHero = new Superhero();
+
+      newHero.loadPower(hero.superPower);
+      newHero.loadData(hero);
+
+      newHero.save()
+        .then(function(hero){
+          console.log(hero, 'EACH HERO SUCCESS');
+          newHeroes.push(hero);
+          cb();
+        }, function(err){
+          if(err) cb(err);
+        });
+    },function(err) {
+        if(err) throw err;
+        res.json(newHeroes);
+      });
   });
 
 
