@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 import App from './App';
-import Home from './Home';
-import Heroes from './Heros/HeroesContainer';
+import Home from './HomeContainer';
+import HeroesContainer from './Heroes/HeroesContainer';
+import PostHeroContainer from './Heroes/PostHeroContainer';
 import './index.css';
 
 ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
-      <Route path="/home" component={Home}/>
-      <Route path="/heroes" component={Heroes} />
+      <Route path="/heroes" component={HeroesContainer}/>
+      <Route path="/post" component={PostHeroContainer}/>
     </Route>
   </Router>,
   document.getElementById('root')
